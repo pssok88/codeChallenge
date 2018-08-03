@@ -5,10 +5,8 @@ export class WebForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formInput: {
-                stringText: "",
-                urlText: ""
-            },
+            stringText: "",
+            urlText: "",
             reversed: "",
             urlResponse: "",
             method: ""
@@ -16,7 +14,7 @@ export class WebForm extends React.Component {
         this.onFieldChange = this.onFieldChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onClick = this.onClick.bind(this);
-        this.reverse = this.reverse.bind(this);
+        //this.reverse = this.reverse.bind(this);
 
     };
 
@@ -26,6 +24,7 @@ export class WebForm extends React.Component {
 
     onFieldChange(event) {
         const target = event.target;
+        console.log("type: " + target.type)
         //const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         const value = target.value;
@@ -35,14 +34,12 @@ export class WebForm extends React.Component {
         console.log(name, value);
         this.setState({
             ...this.state,
-            formInput: {
-                ...this.state.formInput,
-                [name]: value
-            }
+            [name]: value
+
         });
     }
 
-    onDropChange(event) {
+    onDropChange = (event) => {
         var method = event.target.value
         this.setState({ method })
     }
@@ -55,49 +52,60 @@ export class WebForm extends React.Component {
         this.onSubmit(fieldClicked);
     }
 
-    onSubmit(field) {
+    onSubmit = () => {
 
-        console.log(field);
-        //insert api call to reverse
+        const response = fetch('/api/reverse?text=' + this.state.stringText)
+            .then(function (response) {
+                // The response is a Response instance.
+                // You parse the data into a useable format using `.json()`
+                return response.json();
+            }).then(function (stringText) {
+                // `data` is the parsed version of the JSON returned from the above endpoint.
+                var reversed = stringText.reversed;
+                console.log(reversed);
+                this.setState({ stringText: reversed })
+                //return reversed;
+
+            });
+        console.log(response)
         // var request = require('request');
-        // request('/api/reverse', function(error,response,body){
-        //     if(!error && response.statusCode == 200){
-        //         console.log(body);
+        // request('/api/reverse', function (error, response, body) {
+        //     console.log(body);
+        //     // if (!error && response.statusCode === 200) {
+        //     //     console.log(body);
+        //     // }
+        // })
+        // var request = require('request');
+        // request({ url: 'api/reverse?text=' + this.state.formInput.stringText }, function (error, response, body) {
+        //     if (!error && response.statusCode === 200) {
+        //         var info = JSON.parse(body);
+        //         console.log(info);
         //     }
         // })
-
-        // var http = require('http');
-        // var client = http.createClient(3000, 'localhost');
-        // var request = client.request('GET', '/api/reverse');
-        // request.write("stuff");
-        // request.end();
-        // request.on("response", function (response) {
-        // handle the response
-        // });
 
         //insert api call to return url
 
 
-        this.setState({
-            ...this.state,
-            formInput: {
-                ...this.state.formInput,
-                [field]: ''
-            }
-        });
-        field === "stringText" ? this.reverse(this.state.formInput.stringText) : this.urlResponse(field);
+        // this.setState({
+        //     ...this.state,
+        //     formInput: {
+        //         ...this.state.formInput,
+        //         [field]: ''
+        //     }
+        // });
+        // field === "stringText" ? this.reverse(this.state.formInput.stringText) : this.urlResponse(field);
 
     };
 
-    reverse(text) {
-        var reversed = [];
+    // reverse(text) {
+    //     var reversed = [];
 
-        for (var i = text.length - 1; i >= 0; i--) {
-            reversed.push(text[i])
-        }
-        reversed.join("");
-        this.setState({ reversed });
-    };
+    //     for (var i = text.length - 1; i >= 0; i--) {
+    //         reversed.push(text[i])
+    //     }
+    //     reversed.join("");
+    //     this.setState({ reversed });
+    // };
 
     urlResponse(field) {
 
@@ -115,14 +123,14 @@ export class WebForm extends React.Component {
                     <div className="form-group">
                         <label>
                             String Text:
-              <input className="form-control" type="text" name="stringText" value={this.state.formInput.stringText} onChange={this.onFieldChange} />
+              <input className="form-control" type="text" name="stringText" value={this.state.stringText} onChange={this.onFieldChange} />
                         </label>
                         <button style={{ marginLeft: "10px" }} className="btn btn-primary" type="button" name="submitString" onClick={this.onClick}>Submit</button>
                     </div>
                     <div className="form-group">
                         <label>
                             URL Text:
-              <input className="form-control" type="text" name="urlText" value={this.state.formInput.urlText} onChange={this.onFieldChange} />
+              <input className="form-control" type="text" name="urlText" value={this.state.urlText} onChange={this.onFieldChange} />
                         </label>
                         <button style={{ marginLeft: "10px" }} className="btn btn-warning" type="button" name="submitUrl" onClick={this.onClick}>Submit</button>
 
