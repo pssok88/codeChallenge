@@ -47,9 +47,6 @@ export class WebForm extends React.Component {
     onClick(event) {
         const target = event.target;
         const name = target.name;
-
-        // var fieldClicked = name === "submitString" ? "stringText" : "urlText";
-        // this.onSubmitReverse(fieldClicked);
         switch (name) {
             case "submitString":
                 this.onSubmitReverse();
@@ -78,7 +75,7 @@ export class WebForm extends React.Component {
     };
 
     onSubmitUrl() {
-        var endpoint = this.state.method === "GET" ? '/api?text=' : '/api/post?text=';
+        //var endpoint = this.state.method === "GET" ? '/api?text=' : '/api/post?text=';
         switch (this.state.method) {
             case "GET":
                 var endpoint = '/api?text=';
@@ -128,13 +125,6 @@ export class WebForm extends React.Component {
                 });
         }
     }
-
-    urlResponse(field) {
-
-        var urlResponse = field === "GET" ? "URL Posted" : "URL Retrieved";
-        this.setState({ urlResponse });
-    }
-
 
     render() {
         return (
