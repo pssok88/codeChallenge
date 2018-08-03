@@ -8,3 +8,6 @@ Now localhost:3000 and proxy localhost:5000 will run concurrently
 Input field #1 takes a string, once submit is clicked it is returned on the DOM in reverse.
 
 Input field #2 takes in a url, and once method is selected you can click submit and display onto the DOM response.
+
+form.jsx contains the frontend code in Reactjs
+server.js contains the APIs
