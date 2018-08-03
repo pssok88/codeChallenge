@@ -12,7 +12,7 @@ export class WebForm extends React.Component {
             method: ""
         }
         this.onFieldChange = this.onFieldChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.onSubmitReverse = this.onSubmitReverse.bind(this);
         this.onClick = this.onClick.bind(this);
         //this.reverse = this.reverse.bind(this);
 
@@ -48,64 +48,86 @@ export class WebForm extends React.Component {
         const target = event.target;
         const name = target.name;
 
-        var fieldClicked = name === "submitString" ? "stringText" : "urlText";
-        this.onSubmit(fieldClicked);
+        // var fieldClicked = name === "submitString" ? "stringText" : "urlText";
+        // this.onSubmitReverse(fieldClicked);
+        switch (name) {
+            case "submitString":
+                this.onSubmitReverse();
+                break;
+            case "submitUrl":
+                this.onSubmitUrl();
+                break;
+            default: console.log("switch error");
+        }
     }
 
-    onSubmit = () => {
-
+    onSubmitReverse() {
         const response = fetch('/api/reverse?text=' + this.state.stringText)
             .then(function (response) {
                 // The response is a Response instance.
                 // You parse the data into a useable format using `.json()`
                 return response.json();
-            }).then(function (stringText) {
+            }).then((stringText) => {
                 // `data` is the parsed version of the JSON returned from the above endpoint.
                 var reversed = stringText.reversed;
                 console.log(reversed);
-                this.setState({ stringText: reversed })
+                this.setState({ reversed, stringText: "" }, () => { console.log(this.state.reversed) })
                 //return reversed;
-
             });
-        console.log(response)
-        // var request = require('request');
-        // request('/api/reverse', function (error, response, body) {
-        //     console.log(body);
-        //     // if (!error && response.statusCode === 200) {
-        //     //     console.log(body);
-        //     // }
-        // })
-        // var request = require('request');
-        // request({ url: 'api/reverse?text=' + this.state.formInput.stringText }, function (error, response, body) {
-        //     if (!error && response.statusCode === 200) {
-        //         var info = JSON.parse(body);
-        //         console.log(info);
-        //     }
-        // })
-
-        //insert api call to return url
-
-
-        // this.setState({
-        //     ...this.state,
-        //     formInput: {
-        //         ...this.state.formInput,
-        //         [field]: ''
-        //     }
-        // });
-        // field === "stringText" ? this.reverse(this.state.formInput.stringText) : this.urlResponse(field);
 
     };
 
-    // reverse(text) {
-    //     var reversed = [];
+    onSubmitUrl() {
+        var endpoint = this.state.method === "GET" ? '/api?text=' : '/api/post?text=';
+        switch (this.state.method) {
+            case "GET":
+                var endpoint = '/api?text=';
+                //         const response = fetch('/api?text=' + this.state.urlText)
+                //             .then(function (response) {
+                //                 // The response is a Response instance.
+                //                 // You parse the data into a useable format using `.json()`
+                //                 return response.json();
+                //             }).then((text) => {
+                //                 // `data` is the parsed version of the JSON returned from the above endpoint.
+                //                 //var reversed = urlText;
+                //                 console.log(text.newText);
+                //                 this.setState({ urlResponse: text.newText, urlText: "" })
+                //                 //return reversed;
+                //             });
+                break;
+            case "POST":
+                var endpoint = '/api/post?text=';
+                //         const postResponse = fetch('/api/post?text=' + this.state.urlText)
+                //             .then(function (response) {
+                //                 // The response is a Response instance.
+                //                 // You parse the data into a useable format using `.json()`
+                //                 return response.json();
+                //             }).then((text) => {
+                //                 // `data` is the parsed version of the JSON returned from the above endpoint.
+                //                 //var reversed = urlText;
+                //                 console.log(text.postResponse);
+                //                 this.setState({ urlResponse: text.postResponse, urlText: "" })
+                //                 //return reversed;
+                //             });
+                break;
+            default: alert("Please Select Method")
+                break;
 
-    //     for (var i = text.length - 1; i >= 0; i--) {
-    //         reversed.push(text[i])
-    //     }
-    //     reversed.join("");
-    //     this.setState({ reversed });
-    // };
+
+        }
+        if (this.state.urlText !== "") {
+            const response = fetch(endpoint + this.state.urlText)
+                .then(function (response) {
+                    // The response is a Response instance.
+                    // You parse the data into a useable format using `.json()`
+                    return response.json();
+                }).then((text) => {
+                    // `data` is the parsed version of the JSON returned from the above endpoint.
+                    this.setState({ urlResponse: text.newText, urlText: "" })
+                    //return reversed;
+                });
+        }
+    }
 
     urlResponse(field) {
 
