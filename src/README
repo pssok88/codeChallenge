@@ -1,6 +1,5 @@
 To run the app locally:
 - cd into the root client folder
-- npm start
 - yarn dev 
 
 Now localhost:3000 and proxy localhost:5000 will run concurrently
