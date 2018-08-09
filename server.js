@@ -19,13 +19,13 @@ app.get('/api/reverse', (req, res) => {
 
 app.get('/api', (req, res) => {
     var text = req.param('text');
-    var fullText = "URL submited was: " + text;
+    var fullText = 'URL submited was: "' + text + '"';
     res.send({ newText: fullText });
 });
 
 app.get('/api/post', (req, res) => {
     var text = req.param('text');
-    //do something with data receivedy
+    //do something with data received
     var fullText = "Thank you! URL was Submited";
     res.send({ newText: fullText });
 });

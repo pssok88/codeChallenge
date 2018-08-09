@@ -24,14 +24,14 @@ export class WebForm extends React.Component {
 
     onFieldChange(event) {
         const target = event.target;
-        console.log("type: " + target.type)
+        //console.log("type: " + target.type)
         //const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         const value = target.value;
 
         //var display = this.state.formInput.urlText !== '' ? "visible" : "hidden";
 
-        console.log(name, value);
+        //console.log(name, value);
         this.setState({
             ...this.state,
             [name]: value
@@ -67,7 +67,7 @@ export class WebForm extends React.Component {
             }).then((stringText) => {
                 // `data` is the parsed version of the JSON returned from the above endpoint.
                 var reversed = stringText.reversed;
-                console.log(reversed);
+                //console.log(reversed);
                 this.setState({ reversed, stringText: "" }, () => { console.log(this.state.reversed) })
                 //return reversed;
             });
@@ -137,19 +137,18 @@ export class WebForm extends React.Component {
                             String Text:
               <input className="form-control" type="text" name="stringText" value={this.state.stringText} onChange={this.onFieldChange} />
                         </label>
-                        <button style={{ marginLeft: "10px" }} className="btn btn-primary" type="button" name="submitString" onClick={this.onClick}>Submit</button>
+                        <button style={{ marginLeft: "10px", visibility: this.state.stringText === "" ? "hidden" : "visible" }} className="btn btn-primary" type="button" name="submitString" onClick={this.onClick}>Submit</button>
                     </div>
                     <div className="form-group">
                         <label>
                             URL Text:
               <input className="form-control" type="text" name="urlText" value={this.state.urlText} onChange={this.onFieldChange} />
                         </label>
-                        <button style={{ marginLeft: "10px" }} className="btn btn-warning" type="button" name="submitUrl" onClick={this.onClick}>Submit</button>
+                        <button style={{ marginLeft: "10px", visibility: this.state.urlText === "" ? "hidden" : "visible" }} className="btn btn-warning" type="button" name="submitUrl" onClick={this.onClick}>Submit</button>
 
                     </div>
-                    <div id="methodDisplay">
+                    <div>
                         <label>HTTP Method
-
                         <select value={this.state.method} onChange={this.onDropChange}>
                                 <option defaultValue="default">Select Method</option>
                                 <option value="GET">GET</option>
@@ -158,13 +157,14 @@ export class WebForm extends React.Component {
                     </div>
 
                 </form>
-                <div>
-                    <h4 id="reverseString">Reversed String: {this.state.reversed}</h4>
+                <div style={{ marginTop: "20px", visibility: this.state.urlText === "" ? "hidden" : "visible" }}>
+                    <div>
+                        <h4 id="reverseString">Reversed String: {this.state.reversed}</h4>
+                    </div>
+                    <div>
+                        <h4 id="urlString">Url Response: {this.state.urlResponse}</h4>
+                    </div>
                 </div>
-                <div>
-                    <h4 id="urlString">Url Response: {this.state.urlResponse}</h4>
-                </div>
-
             </div>
         )
     }
